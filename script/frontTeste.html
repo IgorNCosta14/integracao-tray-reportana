@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="carrinho-abandonado.js"></script>
+    
+    <div class="step-content animated ch-animated" data-bind="css: { 'ch-hidden': !customerState() }">
+        <!-- Máscaras -->
+
+<div class="ch-vspace-md" id="customer-logged" data-bind="visible: customerState() == 'viewer'" style="">
+    <h2 class="ch-vspace-xs ch-title-3">Olá Igor!</h2>
+
+    <fieldset>
+        <div class="ch-well">
+            <a href="#" class="link pull-right" id="customer-logout" data-bind="click: logout" data-checkout-event-tracker="sair_checkout">
+                Sair ou trocar
+            </a>
+            <p class="ch-customer-email" data-bind="css: {'ch-long-mail': customerEmailTooLong()} ">
+               igor.costa@turbopartners.com.br
+            </p>
+        </div>
+    </fieldset>
+
+    <div id="customer-profile-label" data-bind="if: $data.customer &amp;&amp;
+                                                showCustomerProfileLabel(),
+                                                css: {'ch-vspace-sm': showCustomerProfileLabel()}"></div>
+
+    
+                
+    <p class="">
+        
+        Igor Nascimento Costa
+
+                
+<span class="ch-safe-data" data-bind="visible: !customer.byPassword" style="display: none;">
+    <svg class="ch-icon">
+      <use xlink:href="#ch-icon-safe"></use>
+    </svg>
+</span>
+        <br>
+                    <span data-bind="visible: samplePhoneWithInternationalMask() !== ''" style="display: none;">27 997737840</span>
+            <span data-bind="visible: samplePhoneWithInternationalMask() == ''">(27) 99773-7840</span>
+            </p>
+
+    <p class="ch-customer-legal-data">
+        
+        
+
+        
+        
+    </p>
+    </div>
+
+
+<nav class="ch-steps-menu-actions hidden-md hidden-lg" data-bind="visible: customerState() !== 'inputs'">
+    <button data-bind="click: nextStep" class="btn-next-step">
+        Ir para o próximo passo
+    </button>
+
+    <a class="link ch-back-step" data-bind="click: logout" data-checkout-event-tracker="sair_checkout">
+        Informar outro e-mail ou CPF/CNPJ
+    </a>
+</nav>        <form id="form-customer">
+            <fieldset data-bind="visible: customerState() == 'inputs'" style="display: none;">
+                <div class="ch-input-group">
+                    <input class="ch-input" id="customer-id" name="id" type="hidden" value="1745">
+                    <input value="igor.costa@turbopartners.com.br" class="ch-input  text-lowercase" id="customer-email" name="email" type="email" maxlength="100" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" data-bind="event: { blur: checkEmailHasAccount, keyup: checkEmailHasAccount, keypress: onEnterEmail },
+                            css: errors().email.classInput,
+                            value: email" required="">
+
+                    <label class="ch-label ch-small" for="customer-email">
+                        <span class="ch-label-content">
+                        E-mail
+                            <span class="ch-label-sample">
+                                seu@email.com.br
+                            </span>
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-mail"></use></svg>
+                        <svg class="ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+                    <label for="customer-email" class="ch-no-margin ch-error-message-label">
+                        <small data-bind="visible: errors().email.visible" class="message" style="display: none;">
+                            <span data-bind="text: errors().email.message, css: errors().email.classMessage" class="hidden"></span>
+                            <a data-bind="visible: errors().email.action, css: errors().email.classLink, click: callIdentification.bind($data, 'email')" style="display: none;">
+                                carregue os dados de cadastro.
+                            </a>
+                        </small>
+                    </label>
+                </div>
+                <div class="ch-input-group">
+                    <input data-bind="event: { blur: hasFamilyName,  keyup: hasFamilyName, }" class="ch-input " name="name" id="customer-name" type="text" value="Igor Nascimento Costa" maxlength="300" required="">
+
+                    <label class="ch-label" for="customer-name">
+                        <span class="ch-label-content">
+                            Nome completo
+                            <span class="ch-label-sample">
+                                João Andrade da Silva
+                            </span>
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-user"></use></svg>
+                        <svg class="ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+                    <label for="customer-name" class="ch-no-margin ch-error-message-label">
+                        <small data-bind="visible: errors().name.visible" class="message" style="display: none;">
+                            <span data-bind="text: errors().name.message, css: errors().name.classMessage" class="hidden"></span>
+                        </small>
+                    </label>
+                </div>
+
+                <div class="ch-input-group" data-bind="visible: visibleCpfInput()">
+                    <input value="14805924713" data-hj-whitelist="" id="customer-cpf" name="cpf" type="tel" data-mask="000.000.000-00" maxlength="14" class="ch-input " data-bind="event: { keyup: isCpf, blur: isCpf},
+                            css: errors().cpf.classInput,
+                            required: cpfDependency" required="" autocomplete="off">
+
+                    <label class="ch-label" for="customer-cpf">
+                        <span class="ch-label-content">
+                            CPF
+                            <span class="ch-label-sample" data-bind="visible: '123.456.789-10' !== ''">
+                                123.456.789-10
+                            </span>
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-cpf"></use></svg>
+                        <svg class="ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+
+                    <label for="customer-cpf" class="ch-no-margin ch-error-message-label">
+                        <small data-bind="visible: errors().cpf.visible" class="message" style="display: none;">
+                            <span data-bind="text: errors().cpf.message, css: errors().cpf.classMessage"></span>
+                            <a data-bind="visible: errors().cpf.action, css: errors().cpf.classLink, click: callIdentification.bind($data, 'cpf')" style="display: none;">
+                                                                carregue os dados de cadastro.
+                            </a>
+                        </small>
+                    </label>
+                </div>
+
+                
+                <div class="ch-input-group" data-bind="visible: isBirthDateVisible">
+                    <input data-bind="event: { keyup: isValidBirthDate, focusout: isValidBirthDate, keypress: disableEnterInput },
+                            css: errors().birthDate.classInput" data-hj-whitelist="" class="ch-input " name="birth-date" id="customer-birth-date" type="tel" value="06/01/1995" required="" maxlength="10">
+
+                    <label class="ch-label" for="customer-birth-date">
+                        <span class="ch-label-content">
+                            Data de nascimento
+                            <span class="ch-label-sample">
+                                12/04/1992
+                            </span>
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-calendar"></use></svg>
+                        <svg class="ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+
+                    <label for="customer-birth-date" class="ch-no-margin ch-error-message-label">
+                        <small data-bind="text: errors().birthDate.message,
+                                visible: errors().birthDate.visible,
+                                css: errors().birthDate.classMesssage" class="message" data-hj-whitelist="" style="display: none;"></small>
+                    </label>
+                </div>
+
+                
+
+
+<div class="ch-input-group">
+    <input class="ch-input" id="customer-phone" name="phone" type="tel" data-mask-type="tel" data-mask="(00) 00000-0000" maxlength="15" data-bind="
+            event: { keyup: checkPhoneNumber, blur: checkPhoneNumber },
+            value: phone(),
+            css: { empty: !phone() }" required="" autocomplete="off">
+    <label class="ch-label" for="customer-phone">
+        <span class="ch-label-content">
+            Telefone celular ou fixo
+            <small class="ch-label-sample" data-bind="visible: '(14) 99999-9999' !== ''">
+                <span data-bind="visible: samplePhoneWithInternationalMask() != '', text: samplePhoneWithInternationalMask()" style="display: none;"></span> 
+                <span data-bind="visible: samplePhoneWithInternationalMask() == ''">(14) 99999-9999</span>
+            </small>
+        </span>
+        <svg class="ch-icon ch-icon-label"><use xlink:href="#ch-icon-phone2"></use></svg>
+        <svg class="ch-icon ch-checked-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+    </label>
+
+    <label for="customer-phone" class="ch-no-margin ch-error-message-label">
+        <small data-bind="text: errors().phone.message, css: { hidden: !errors().phone.visible }" class="ch-error-message hidden"></small>
+    </label>
+</div>
+                <div class="ch-input-group" data-bind="visible: rgRequired" style="display: none;">
+                    <input data-bind="event: { blur: validateRg, keyup: validateRg }" class="ch-input empty" data-hj-whitelist="" id="customer-rg" name="rg" value="" minlength="5" maxlength="15" required="">
+                    <label class="ch-label" for="customer-rg">
+                        <span class="ch-label-content">
+                            RG
+                            <span class="ch-label-sample">
+                                12.345.678-9
+                            </span>
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-rg"></use></svg>
+                        <svg class="ch-icon ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+                    <label for="customer-rg" class="ch-no-margin ch-error-message-label">
+                        <small data-bind="text: errors().rg.message,
+                                visible: errors().rg.visible,
+                                css: errors().rg.classMesssage" class="message" data-hj-whitelist="" style="display: none;"></small>
+                    </label>
+                </div>
+
+                <div class="ch-input-group" data-bind="visible: genderRequired" style="display: none;">
+                                        <select class="ch-input empty" id="customer-gender" name="gender" data-bind="event: { change: checkRequired }" required="">
+                        <option value=""></option>
+                                                                                <option value="1">Masculino</option>
+                                                                                <option value="2">Feminino</option>
+                                            </select>
+
+
+                    <label class="ch-label" for="customer-gender">
+                        <span class="ch-label-content">
+                            Sexo
+                        </span>
+                        <svg class="ch-icon"><use xlink:href="#ch-icon-gender"></use></svg>
+                        <svg class="ch-icon ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                    </label>
+
+                    <label for="customer-gender" class="ch-no-margin ch-error-message-label">
+                        <small class="ch-error-message hidden">Informe o sexo</small>
+                    </label>
+                </div>
+
+                <div data-bind="foreach: { data: customerAttributes, as: 'attribute' }"></div>
+
+                <div class="ch-input-group">
+                    <input class="ch-checkbox" type="checkbox" name="newsletter" id="newsletter" data-bind="checked: acceptNews">
+                    <label class="ch-label" for="newsletter"></label>
+                    <label for="newsletter" data-bind="text: i18n['customer']['newsletter-term']">Desejo receber e-mails promocionais</label>
+                </div>
+                <div class="ch-input-group" data-bind="visible: (showLegalPerson &amp;&amp; showRegisterAs)">
+                    <input class="ch-checkbox" type="checkbox" name="customer-type-business" id="customer-type" data-bind="checked: pJuridica">
+                    <label for="customer-type" class="ch-label"></label>
+                    <label for="customer-type">
+                        Fazer meu cadastro como
+                        <strong class="ch-text-info">Pessoa Jurídica.</strong>
+                        <div class="ch-checked-icon"></div>
+                    </label>
+                </div>
+
+                <div data-bind="visible: (showLegalPerson &amp;&amp; pJuridica)" data-checkout="customer-pjuridica" style="display: none;">
+                    <h2 class="heading">Informações da Empresa</h2>
+
+                    <div class="ch-input-group">
+                        <input class="ch-input empty" data-hj-whitelist="" name="company-name" id="customer-companyName" type="text" maxlength="200" value="" data-bind="event: { blur: checkRequired }" required="">
+
+                        <label class="ch-label" for="customer-companyName">
+                            <span class="ch-label-content">
+                                Razão Social
+                            </span>
+                            <svg class="ch-icon"><use xlink:href="#ch-icon-company"></use></svg>
+                            <svg class="ch-icon ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                        </label>
+
+                        <label for="customer-companyName" class="ch-no-margin ch-error-message-label">
+                            <small class="ch-error-message hidden">
+                                Informe a razão social
+                            </small>
+                        </label>
+                    </div>
+                    <fieldset>
+                        <div class="ch-input-group ch-vspace-md">
+                            <input data-bind="event: { keyup: isCnpj, blur: isCnpj },
+                                    required: cnpjDependency,
+                                    css: errors().cnpj.classInput" data-hj-whitelist="" class="ch-input empty" id="customer-cnpj" name="cnpj" type="tel" value="" data-mask="00.000.000/0000-00" maxlength="18" required="" autocomplete="off">
+
+                            <label class="ch-label" for="customer-cnpj">
+                                <span class="ch-label-content">
+                                    CNPJ
+                                    <span class="ch-label-sample" data-bind="visible: '12.345.678/0001-10' !== ''">
+                                        12.345.678/0001-10
+                                    </span>
+                                </span>
+                                <svg class="ch-icon"><use xlink:href="#ch-icon-cnpj"></use></svg>
+                                <svg class="ch-icon ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                            </label>
+
+                            <label for="customer-cnpj" class="ch-no-margin ch-error-message-label">
+                                <small data-bind="visible: errors().cnpj.visible" class="message" style="display: none;">
+                                    <span data-bind="text: errors().cnpj.message, css: errors().cnpj.classMessage"></span>
+                                    <a data-bind="visible: errors().cnpj.action, css: errors().cnpj.classLink, click: callIdentification.bind($data, 'cnpj')" style="display: none;">
+                                                                                carregue os dados de cadastro.
+                                    </a>
+                                </small>
+                            </label>
+                        </div>
+
+                        <div data-bind="foreach: { data: customerAttributes, as: 'attribute' }"></div>
+
+                        <div class="ch-input-group">
+                            <input class="ch-checkbox" type="checkbox" data-bind="checked: isFreeStateScription" name="customer-free-subscription" id="customer-free-subscription">
+
+                            <label for="customer-free-subscription" class="ch-label"></label>
+                            <label for="customer-free-subscription">Isento de
+                                <strong class="ch-text-info">Inscrição Estadual.</strong>
+                            </label>
+                            <div data-checkout-template="customer-pjuridica-state-inscription" data-bind="visible: !isFreeStateScription()" class="ch-input-group">
+
+                                <input data-hj-whitelist="" data-bind="event: { blur: !isFreeStateScription(), blur: checkRequired }" class="ch-input empty" id="customer-stateScription" name="stateScription" type="text" maxlength="15" value="" required="">
+
+                                <label class="ch-label" for="customer-stateScription">
+                                    <span class="ch-label-content">
+                                        Inscrição Estadual
+                                    </span>
+                                    <svg class="ch-icon"><use xlink:href="#ch-icon-inscription"></use></svg>
+                                    <svg class="ch-icon ch-checked-icon ch-icon"><use xlink:href="#ch-icon-checked"></use></svg>
+                                </label>
+
+                                <label for="customer-stateScription" class="ch-no-margin ch-error-message-label">
+                                     <small class="ch-error-message hidden">
+                                        Informe a inscrição estadual
+                                    </small>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="step-actions">
+                    <button data-bind="click: subscribe, enable: isValidForm, text: buttonText" class="btn-next-step btn-cart-form">Continuar</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    
+</body>
+</html>
