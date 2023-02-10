@@ -7,6 +7,7 @@ const app = express()
 app.post('/products/purchase', (req: Request, res: Response) => {
 
     console.log(req);
+    console.log(req.body);
 
     return res.status(201).send();
 })
