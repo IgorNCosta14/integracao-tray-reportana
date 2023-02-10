@@ -1,4 +1,16 @@
-window.onload = () => {
+    window.onload = () => {
+    //window.location.href
+
+    const url = 'https://www.usebelafit.com.br/checkout?session_id=5hkbt4qima57tuol3vmkv3q742&store_id=1074121&iniSession=1#principal';
+
+    !(function(){
+        if( window.location.href.match(/https:\/\/www.usebelafit\.com\.br\/checkout*/g)) {
+            console.log('ok');
+        } else {
+            console.log("not ok");
+        }
+    })();
+
     let date = new Date();
     let dateFormatted = `${date.getFullYear()}-${((date.getMonth()+1)<10?'0':'') + (date.getMonth()+1)}-${(date.getDate()<10?'0':'') + date.getDate()} ${date.getHours()}:${(date.getMinutes()<10?'0':'') + date.getMinutes()}`;
 

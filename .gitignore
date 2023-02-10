@@ -1,3 +1,4 @@
 script/frontTeste.html
 **/node_modules
 **/yarn.lock
+**/package-lock.json
