@@ -10,9 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/products/purchase', (req: Request, res: Response) => {
 
-    console.log('req turbo',req);
-    console.log('req body turbo',req.body);
-    console.log('req body turbo',req.body.data);
+    console.log(req.body);
 
     return res.status(201).send();
 })
