@@ -1,8 +1,12 @@
+import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
+
 const port = process.env.PORT || 8080;
 
 const app = express()
+
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/products/purchase', (req: Request, res: Response) => {
 
