@@ -14,6 +14,6 @@ app.get('/test', (req: Request, res: Response) => {
     return res.status(201).send("oi")
 })
 
-app.listen(8080, '0.0.0.0', () => {
+app.listen('0.0.0.0', () => {
     console.log('Server is running!');
 })
