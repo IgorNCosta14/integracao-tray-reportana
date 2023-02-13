@@ -1,3 +1,4 @@
+import axios from 'axios';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
@@ -16,23 +17,14 @@ interface IClient {
 
 async function getClient(id: any): Promise<IClient> {  
     let client: IClient = {
-        consumer_key: "",
-        consumer_secret: "",
+        consumer_key: `${process.env.CONSUMERKEY}`,
+        consumer_secret: `${process.env.CONSUMERSECRET}`,
         code: ""
     }
 
     switch (`${id}`) {
-        case "391250" : client = {
-            consumer_key: `${process.env.CONSUMERKEY391250}`,
-            consumer_secret: `${process.env.CONSUMERSECRET391250}`,
-            code: `${process.env.CODE391250}`
-        }; break;
-
-        case "391251" : client = {
-            consumer_key: `${process.env.CONSUMERKEY391251}`,
-            consumer_secret: `${process.env.CONSUMERSECRET391251}`,
-            code: `${process.env.CODE391251}`
-        }; break;
+        case "391250" : client.code = `${process.env.CODE391250}`; break;
+        case "391251" : client.code = `${process.env.CODE391251}`; break;
     }
 
     return client;
@@ -44,7 +36,17 @@ app.post('/products/purchase', async (req: Request, res: Response) => {
 
     const client = await getClient(req.body.seller_id);
 
-    console.log(client);
+    await axios.post('', client, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    }).then(async (response) => {
+        console.log(response)
+    }).catch((error) => {
+        console.log(error);
+    })
+
+    // await axios.get(`https://391250.commercesuite.com.br/web_api/orders/${req.body.scope_id}?${token.access_token}`)
 
     return res.status(201).send();
 })
