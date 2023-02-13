@@ -15,28 +15,40 @@ interface IClient {
     code: string
 }
 
-async function getClient(id: any): Promise<IClient> {  
+interface IGetCredential {
+    client: IClient,
+    url: string
+}
+
+async function getCredential(id: any): Promise<IGetCredential > {  
     let client: IClient = {
         consumer_key: `${process.env.CONSUMERKEY}`,
         consumer_secret: `${process.env.CONSUMERSECRET}`,
         code: ""
     }
 
+    let url: string = "";
+
     switch (`${id}`) {
-        case "391250" : client.code = `${process.env.CODE391250}`; break;
-        case "391251" : client.code = `${process.env.CODE391251}`; break;
+        case "391250" : client.code = `${process.env.CODE391250}`, url = `${process.env.URL391250}`; break;
+        case "391251" : client.code = `${process.env.CODE391251}`, url = `${process.env.URL391251}`; break;
     }
 
-    return client;
+    const credential = { 
+        client,
+        url
+    }
+
+    return credential;
 }
 
 app.post('/products/purchase', async (req: Request, res: Response) => {
 
     console.log(req.body);
 
-    const client = await getClient(req.body.seller_id);
+    const userClient = await getCredential(req.body.seller_id);
 
-    await axios.post('', client, {
+    await axios.post(`${userClient.url}/auth`, userClient.client, {
         headers: {
           'Content-Type': 'application/json'
         }
