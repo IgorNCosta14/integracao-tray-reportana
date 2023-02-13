@@ -42,7 +42,7 @@ app.post('/products/purchase', async (req: Request, res: Response) => {
 
     console.log(req.body);
 
-    const client = getClient(req.body.seller_id);
+    const client = await getClient(req.body.seller_id);
 
     console.log(client);
 
