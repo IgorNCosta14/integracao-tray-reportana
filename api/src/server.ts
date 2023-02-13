@@ -53,7 +53,7 @@ app.post('/products/purchase', async (req: Request, res: Response) => {
           'Content-Type': 'application/json'
         }
     }).then(async (response) => {
-        return await axios.get(`https://391250.commercesuite.com.br/web_api/orders/${req.body.scope_id}?${response.data.access_token}`).then((response) => {
+        return await axios.get(`https://391250.commercesuite.com.br/web_api/orders/${req.body.scope_id}?access_token=${response.data.access_token}`).then((response) => {
             return response;
         }).catch((error) => {
             console.log(error);
