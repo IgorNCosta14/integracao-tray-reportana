@@ -8,10 +8,11 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/products/purchase', (req: Request, res: Response) => {
-
-    console.log(typeof req.body)
+app.post('/products/purchase', async (req: Request, res: Response) => {
+    
     console.log(req.body);
+    const client = `process.env.CLIENT${req.body.seller_id}`;
+    console.log(`${client}`)
 
     return res.status(201).send();
 })
