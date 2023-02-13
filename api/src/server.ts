@@ -62,7 +62,7 @@ app.post('/products/purchase', async (req: Request, res: Response) => {
         console.log(error);
     })
 
-    return res.status(201).json(purchase);
+    return res.status(201).send(purchase);
 })
 
 app.listen(port, '0.0.0.0', () => {
