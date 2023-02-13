@@ -3,3 +3,5 @@ script/frontTeste.html
 **/yarn.lock
 **/package-lock.json
 **/.env
+insert.json
+update.json
