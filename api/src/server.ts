@@ -48,23 +48,17 @@ app.post('/products/purchase', async (req: Request, res: Response) => {
 
     const userClient = await getCredential(req.body.seller_id);
 
-    await axios.post(`${userClient.url}/auth`, userClient.client, {
+    const purchase = await axios.post(`${userClient.url}/auth`, userClient.client, {
         headers: {
           'Content-Type': 'application/json'
         }
     }).then(async (response) => {
-        console.log(response)
+        return await axios.get(`https://391250.commercesuite.com.br/web_api/orders/${req.body.scope_id}?${response.data.access_token}`)
     }).catch((error) => {
         console.log(error);
     })
 
-    // await axios.get(`https://391250.commercesuite.com.br/web_api/orders/${req.body.scope_id}?${token.access_token}`)
-
-    return res.status(201).send();
-})
-
-app.get('/test', (req: Request, res: Response) => {
-    return res.status(201).send("oi")
+    return res.status(201).json(purchase);
 })
 
 app.listen(port, '0.0.0.0', () => {
