@@ -36,20 +36,18 @@ export async  function convertProvince(rovinceCode: string): Promise<string> {
   return provinceName;
 }
 
-export async function convertPurchasePaymentStatus(purchaseStatus: any) {    
-  if (purchaseStatus.aprovado === true && purchaseStatus.cancelado === false) {
+export async function convertPurchasePaymentStatus(Payment: any[]) {    
+  if (Payment.length !== 0) {
     return 'PAID';
-  } else if (purchaseStatus.aprovado === false && purchaseStatus.cancelado === true) {
-    return 'NOT_PAID';
-  } else if (purchaseStatus.aprovado === false && purchaseStatus.cancelado === false) {
+  } else if (Payment.length === 0) {
     return 'PENDING';
-  }
+  } /*else if (purchaseStatus.aprovado === false && purchaseStatus.cancelado === true) {
+  return 'NOT_PAID';
+  }*/
 }
 
 export async function convertPurchasePaymentType(codigo: string) {
-  if (codigo === "psredirect") {
-    return 'CREDIT_CARD';
-  } else if (codigo === "paghiper" || codigo === "pagali-pix") {
+  if (codigo === "10516" || "10526" || "10536" || "10617" || "10623" || "10633" || "10710" || "10725" || "10741" || "10743") {
     return 'PIX';
   } else {
     return 'OTHER';
@@ -57,11 +55,7 @@ export async function convertPurchasePaymentType(codigo: string) {
 }
 
 export async function formatData( {purchase, url}: IFormatData): Promise<Purchase> {
-
-  console.log("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-
   const purchaseDataToSend = new Purchase();
-
   const itemArray: ILineItems[] = [];
 
   purchaseDataToSend.reference_id = purchase.Order.id,
@@ -123,8 +117,8 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
   purchaseDataToSend.currency = 'BRL',
   purchaseDataToSend.total_price = parseFloat(purchase.Order.total),
   purchaseDataToSend.subtotal_price = parseFloat(purchase.Order.partial_total),
-  purchaseDataToSend.payment_status = 'PAID',
-  purchaseDataToSend.payment_method = 'PIX',
+  purchaseDataToSend.payment_status = await convertPurchasePaymentStatus(purchase.Order.Payment),
+  purchaseDataToSend.payment_method = await convertPurchasePaymentType(purchase.Order.payment_method_id),
   purchaseDataToSend.tracking_numbers = "",
   purchaseDataToSend.referring_site = url.split("web_api")[0],
   purchaseDataToSend.status_url = `${url.split("web_api")[0]}my-account/orders`,
