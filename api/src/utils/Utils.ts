@@ -58,9 +58,6 @@ export async function convertPurchasePaymentType(codigo: string) {
 
 export async function formatData( {purchase, url}: IFormatData): Promise<Purchase> {
 
-  console.log("///////////////////utils//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-  console.log(purchase.Order.Customer)
-
   console.log("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
   const purchaseDataToSend = new Purchase();
@@ -114,7 +111,7 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
       variant_title: '',
       quantity: parseInt(product.ProductsSold.quantity),
       price: parseFloat(product.ProductsSold.price),
-      path: product.ProductsSold.url.https,
+      path: product.ProductsSold.url.https.split(';')[0],
       image_url: '', 
       tracking_number: ''
     }
