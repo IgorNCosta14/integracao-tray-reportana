@@ -20,51 +20,9 @@ export interface IFormatedData {
     customer_name: string,
     customer_email: string,
     customer_phone: string,
-    billing_address: {
-        name: string,
-        first_name: string,
-        last_name: string,
-        company?: string,
-        phone: string,
-        address1: string,
-        address2: string,
-        city: string,
-        province: string,
-        province_code: string,
-        country: string,
-        country_code: string,
-        zip: string,
-        latitude?: null,
-        longitude?: null
-    },
-    shipping_address: {
-        name: string,
-        first_name: string,
-        last_name: string,
-        company?: string,
-        phone: string,
-        address1: string,
-        address2: string,
-        city: string,
-        province: string,
-        province_code: string,
-        country: string,
-        country_code: string,
-        zip: string,
-        latitude?: string,
-        longitude?: string
-    },
-    line_items: [
-        {
-            title: string,
-            variant_title: string,
-            quantity: number,
-            price: number
-            path: string,
-            image_url: string, 
-            tracking_number: string
-        }
-    ],
+    billing_address: IAddress,
+    shipping_address: IAddress,
+    line_items: ILineItems[],
     currency: string,
     total_price: number,
     subtotal_price: number,
@@ -79,30 +37,35 @@ export interface IFormatedData {
     original_created_at: string
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-export interface OrderStatus {
-    id: string;
-    default: string;
-    type: string;
-    show_backoffice: string;
-    allow_edit_order: string;
-    description: string;
-    status: string;
-    show_status_central: string;
-    background: string;
+export interface IAddress {
+    name: string,
+    first_name: string,
+    last_name: string,
+    company?: string,
+    phone: string,
+    address1: string,
+    address2: string,
+    city: string,
+    province: string,
+    province_code: string,
+    country: string,
+    country_code: string,
+    zip: string,
+    latitude?: string | null,
+    longitude?: string | null
 }
 
-export interface Urls {
-    payment: string;
+export interface ILineItems {
+    title: string,
+    variant_title: string,
+    quantity: number,
+    price: number
+    path: string,
+    image_url: string, 
+    tracking_number: string
 }
 
-export interface Profile {
-    id: string;
-    name: string;
-}
-
-export interface Profile2 {
+export interface IProfile2 {
     id: string;
     price_list_id: string;
     name: string;
@@ -112,12 +75,7 @@ export interface Profile2 {
     selected: string;
 }
 
-export interface Extensions {
-    Profile: Profile;
-    Profiles: Profile2[];
-}
-
-export interface CustomerAddress2 {
+export interface ICustomerAddress2 {
     id: string;
     customer_id: string;
     address: string;
@@ -136,83 +94,28 @@ export interface CustomerAddress2 {
     not_list: string;
 }
 
-export interface CustomerAddress {
-    CustomerAddress: CustomerAddress2;
+export interface ICustomerAddress {
+    CustomerAddress: ICustomerAddress2;
 }
 
-export interface Customer {
-    cnpj: string;
-    newsletter: string;
-    created: string;
-    terms: string;
-    id: string;
-    name: string;
-    registration_date: string;
-    rg: string;
-    cpf: string;
-    phone: string;
-    cellphone: string;
-    birth_date: string;
-    gender: string;
-    email: string;
-    nickname: string;
-    token: string;
-    total_orders: string;
-    observation: string;
-    type: string;
-    company_name: string;
-    state_inscription: string;
-    reseller: string;
-    discount: string;
-    blocked: string;
-    credit_limit: string;
-    indicator_id: string;
-    profile_customer_id: string;
-    last_sending_newsletter: string;
-    last_purchase: string;
-    last_visit: string;
-    last_modification: string;
-    address: string;
-    zip_code: string;
-    number: string;
-    complement: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    country: string;
-    modified: string;
-    Extensions: Extensions;
-    CustomerAddresses: CustomerAddress[];
-}
-
-export interface Sku {
+export interface ISku {
     type: string;
     value: string;
 }
 
-export interface ProductSoldImage {
+export interface IProductSoldImage {
     http: string;
     https: string;
     thumbs: any;
 }
 
-export interface Category {
+export interface ICategory {
     id: string;
     name: string;
     main_category: string;
 }
 
-export interface Url {
-    http: string;
-    https: string;
-}
-
-export interface Stock {
-    id: string;
-    name: string;
-}
-
-export interface ProductsSold2 {
+export interface IProductsSold2 {
     product_kit_id: string;
     product_kit_id_kit: string;
     id_campaign: string;
@@ -224,7 +127,7 @@ export interface ProductsSold2 {
     original_name: string;
     virtual_product: string;
     ean: string;
-    Sku: Sku[];
+    Sku: ISku[];
     price: string;
     cost_price: string;
     original_price: string;
@@ -246,20 +149,26 @@ export interface ProductsSold2 {
     release_date: string;
     commissioner_value: string;
     comissao: string;
-    ProductSoldImage: ProductSoldImage[];
-    Category: Category[];
+    ProductSoldImage: IProductSoldImage[];
+    Category: ICategory[];
     is_giveaway: string;
     BoughtTogether: any[];
-    url: Url;
+    url: {
+        http: string;
+        https: string;
+    };
     Discount: any[];
-    Stock: Stock;
+    Stock: {
+        id: string;
+        name: string;
+    };
 }
 
-export interface ProductsSold {
-    ProductsSold: ProductsSold2;
+export interface IProductsSold {
+    ProductsSold: IProductsSold2;
 }
 
-export interface MarketplaceOrder2 {
+export interface IMarketplaceOrder2 {
     order_id: string;
     marketplace_name: string;
     marketplace_seller_name: string;
@@ -274,29 +183,13 @@ export interface MarketplaceOrder2 {
     updated: string;
 }
 
-export interface MarketplaceOrder {
-    MarketplaceOrder: MarketplaceOrder2;
+export interface IMarketplaceOrder {
+    MarketplaceOrder: IMarketplaceOrder2;
 }
 
-export interface OrderTransaction {
+export interface IOrderTransaction {
     url_payment: string;
     bank_slip: string;
-}
-
-export interface ShippingLabel {
-    application: string;
-    url: string;
-}
-
-export interface PaymentMethodMessage {
-    text: string;
-    text_pag: string;
-    text_confirm: string;
-    confirmation: string;
-}
-
-export interface PaymentsNotification {
-    notification: string;
 }
 
 export interface IRawObject {
@@ -346,26 +239,102 @@ export interface IRawObject {
         has_invoice: string;
         total_comission_user: string;
         total_comission: string;
-        OrderStatus: OrderStatus;
+        OrderStatus: {
+            id: string;
+            default: string;
+            type: string;
+            show_backoffice: string;
+            allow_edit_order: string;
+            description: string;
+            status: string;
+            show_status_central: string;
+            background: string;
+        };
         PickupLocation: any[];
         cost: string;
-        urls: Urls;
+        urls: {
+            payment: string;
+        };
         payment_method_type: string;
-        Customer: Customer;
-        ProductsSold: ProductsSold[];
+        Customer: {
+            cnpj: string;
+            newsletter: string;
+            created: string;
+            terms: string;
+            id: string;
+            name: string;
+            registration_date: string;
+            rg: string;
+            cpf: string;
+            phone: string;
+            cellphone: string;
+            birth_date: string;
+            gender: string;
+            email: string;
+            nickname: string;
+            token: string;
+            total_orders: string;
+            observation: string;
+            type: string;
+            company_name: string;
+            state_inscription: string;
+            reseller: string;
+            discount: string;
+            blocked: string;
+            credit_limit: string;
+            indicator_id: string;
+            profile_customer_id: string;
+            last_sending_newsletter: string;
+            last_purchase: string;
+            last_visit: string;
+            last_modification: string;
+            address: string;
+            zip_code: string;
+            number: string;
+            complement: string;
+            neighborhood: string;
+            city: string;
+            state: string;
+            country: string;
+            modified: string;
+            Extensions: {
+                Profile: {
+                    id: string;
+                    name: string;
+                };
+                Profiles: IProfile2[];
+            };
+            CustomerAddresses: ICustomerAddress[];
+        };
+        ProductsSold: IProductsSold[];
         OrderInvoice: any[];
         Payment: any[];
         MlOrder: any[];
-        MarketplaceOrder: MarketplaceOrder[];
-        OrderTransactions: OrderTransaction[];
+        MarketplaceOrder: IMarketplaceOrder[];
+        OrderTransactions: IOrderTransaction[];
         OrderInvoiceAmount: any[];
         ExtraTabs: any[];
-        ShippingLabel: ShippingLabel;
-        PaymentMethodMessage: PaymentMethodMessage;
-        payments_notification: PaymentsNotification;
+        ShippingLabel: {
+            application: string;
+            url: string;
+        };
+        PaymentMethodMessage: {
+            text: string;
+            text_pag: string;
+            text_confirm: string;
+            confirmation: string;
+        };
+        payments_notification: {
+            notification: string;
+        };
         partner_name: string;
     };
     Extensions: any[];
     User: any[];
     Confirmation: any[];
+}
+
+export interface IFormatData {
+    purchase: IRawObject,
+    url: string
 }
