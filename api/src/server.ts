@@ -2,10 +2,10 @@ import axios from 'axios';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
-import { IRawObject } from './interfaces/interfaces';
 import { formatData, getCredential } from './utils/Utils';
 
 let port = 8080;
+// const base64 = btoa(`${process.env.REPORTANA_CLIENT_ID}:${process.env.REPORTANA_CLIENT_SERVER}`);
 
 if(process.env.PORT != undefined) {
     port = parseInt(process.env.PORT);
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/products/purchase', async (req: Request, res: Response): Promise<Response> => {
 
-    console.log(req.body);
+    // console.log(req.body);
 
     const userClient = await getCredential(req.body.seller_id);
 
@@ -37,7 +37,24 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     const formatedData = await formatData({ purchase, url: userClient.url });
 
-    console.log(formatedData.Purchase)
+    console.log(formatedData)
+
+    // await axios.post('https://api.reportana.com/2022-05/orders', formatedData,{
+    //     headers: {
+    //          Authorization: `Basic ${base64}`,
+    //          'Content-Type': 'application/json',
+    //          'Accept-Encoding': 'gzip,deflate,compress'
+    //     }
+    // })
+    // .then(function (response) {
+    //     console.log(`Compra atualizada: ${formatedData.number}`);
+    // })
+    // .catch(function (error) {
+    //     if (error.response) {
+    //         console.log(error.response.data);
+    //         console.log(error.response.status);
+    //     }
+    // });
 
     return res.status(201).send(); 
 })
