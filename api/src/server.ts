@@ -37,7 +37,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     const formatedData = await formatData({ purchase, url: userClient.url });
 
-    console.log(formatedData)
+    console.log(formatedData.Purchase)
 
     return res.status(201).send(); 
 })
