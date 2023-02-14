@@ -35,21 +35,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log(error);
     })
 
-    console.log("//////////////////server///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-  console.log(purchase)
+    //const formatedData = await formatData({ purchase, url: userClient.url });
 
-  console.log("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
-
-
-  try {
-    const formatedData = await formatData({ purchase, url: userClient.url });
-
-    return res.status(201).send(formatedData);
-  } catch (error) {
-    console.log(error);
-  }
-
-    
+    return res.status(201).send(purchase); 
 })
 
 app.listen(port, '0.0.0.0', () => {
