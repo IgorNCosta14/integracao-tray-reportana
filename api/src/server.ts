@@ -4,10 +4,10 @@ import 'dotenv/config';
 import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
 
-let port = 8080
+let port = 8080;
 
 if(process.env.PORT != undefined) {
-    port = parseInt(process.env.PORT)
+    port = parseInt(process.env.PORT);
 }
 
 const app = express()
