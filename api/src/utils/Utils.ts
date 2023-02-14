@@ -68,52 +68,52 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
   purchaseDataToSend.customer_email = purchase.Order.Customer.email,
   purchaseDataToSend.customer_phone = `+55${purchase.Order.Customer.cellphone}`,
   purchaseDataToSend.billing_address = {
-      name: purchase.Order.Customer.name,
-      first_name: purchase.Order.Customer.name.split(" ")[0],
-      last_name: purchase.Order.Customer.name.split(" ")[purchase.Order.Customer.name.split(" ").length - 1],
-      company: purchase.Order.Customer.company_name,
-      phone: `+55${purchase.Order.Customer.cellphone}`,
-      address1: `${purchase.Order.Customer.address}, ${purchase.Order.Customer.number}`,
-      address2: `${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.address}, ${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.number}`,
-      city: purchase.Order.Customer.city,
-      province: await convertProvince(purchase.Order.Customer.state),
-      province_code: purchase.Order.Customer.state,
-      country: 'Brazil',
-      country_code: 'BR',
-      zip: purchase.Order.Customer.zip_code,
-      latitude: null,
-      longitude: null
+    name: purchase.Order.Customer.name,
+    first_name: purchase.Order.Customer.name.split(" ")[0],
+    last_name: purchase.Order.Customer.name.split(" ")[purchase.Order.Customer.name.split(" ").length - 1],
+    company: purchase.Order.Customer.company_name,
+    phone: `+55${purchase.Order.Customer.cellphone}`,
+    address1: `${purchase.Order.Customer.address}, ${purchase.Order.Customer.number}`,
+    address2: `${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.address}, ${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.number}`,
+    city: purchase.Order.Customer.city,
+    province: await convertProvince(purchase.Order.Customer.state),
+    province_code: purchase.Order.Customer.state,
+    country: 'Brazil',
+    country_code: 'BR',
+    zip: purchase.Order.Customer.zip_code,
+    latitude: null,
+    longitude: null
   },
   purchaseDataToSend.shipping_address = {
-      name: purchase.Order.Customer.name,
-      first_name: purchase.Order.Customer.name.split(" ")[0],
-      last_name: purchase.Order.Customer.name.split(" ")[purchase.Order.Customer.name.split(" ").length - 1],
-      company: purchase.Order.Customer.company_name,
-      phone: `+55${purchase.Order.Customer.cellphone}`,
-      address1: `${purchase.Order.Customer.address}, ${purchase.Order.Customer.number}`,
-      address2: `${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.address}, ${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.number}`,
-      city: purchase.Order.Customer.city,
-      province: await convertProvince(purchase.Order.Customer.state),
-      province_code: purchase.Order.Customer.state,
-      country: 'Brazil',
-      country_code: 'BR',
-      zip: purchase.Order.Customer.zip_code,
-      latitude: null,
-      longitude: null
+    name: purchase.Order.Customer.name,
+    first_name: purchase.Order.Customer.name.split(" ")[0],
+    last_name: purchase.Order.Customer.name.split(" ")[purchase.Order.Customer.name.split(" ").length - 1],
+    company: purchase.Order.Customer.company_name,
+    phone: `+55${purchase.Order.Customer.cellphone}`,
+    address1: `${purchase.Order.Customer.address}, ${purchase.Order.Customer.number}`,
+    address2: `${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.address}, ${purchase.Order.Customer.CustomerAddresses[0].CustomerAddress.number}`,
+    city: purchase.Order.Customer.city,
+    province: await convertProvince(purchase.Order.Customer.state),
+    province_code: purchase.Order.Customer.state,
+    country: 'Brazil',
+    country_code: 'BR',
+    zip: purchase.Order.Customer.zip_code,
+    latitude: null,
+    longitude: null
   },
   
   purchase.Order.ProductsSold.forEach((product:  IProductsSold) => {
-      const itemOject = {
-          title: product.ProductsSold.original_name,
-          variant_title: '',
-          quantity: parseInt(product.ProductsSold.quantity),
-          price: parseFloat(product.ProductsSold.price),
-          path: product.ProductsSold.url.https,
-          image_url: '', 
-          tracking_number: ''
-      }
+    const itemOject = {
+      title: product.ProductsSold.original_name,
+      variant_title: '',
+      quantity: parseInt(product.ProductsSold.quantity),
+      price: parseFloat(product.ProductsSold.price),
+      path: product.ProductsSold.url.https,
+      image_url: '', 
+      tracking_number: ''
+    }
 
-      itemArray.push(itemOject);
+    itemArray.push(itemOject);
   })
 
   purchaseDataToSend.line_items = itemArray,
@@ -136,21 +136,21 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
 
 export async function getCredential(id: any): Promise<IGetCredential > {  
   let client: IClient = {
-      consumer_key: `${process.env.CONSUMERKEY}`,
-      consumer_secret: `${process.env.CONSUMERSECRET}`,
-      code: ""
+    consumer_key: `${process.env.CONSUMERKEY}`,
+    consumer_secret: `${process.env.CONSUMERSECRET}`,
+    code: ""
   }
 
   let url: string = "";
 
   switch (`${id}`) {
-      case "391250" : client.code = `${process.env.CODE391250}`, url = `${process.env.URL391250}`; break;
-      case "391251" : client.code = `${process.env.CODE391251}`, url = `${process.env.URL391251}`; break;
+    case "391250" : client.code = `${process.env.CODE391250}`, url = `${process.env.URL391250}`; break;
+    case "391251" : client.code = `${process.env.CODE391251}`, url = `${process.env.URL391251}`; break;
   }
 
   const credential = { 
-      client,
-      url
+    client,
+    url
   }
 
   return credential;
