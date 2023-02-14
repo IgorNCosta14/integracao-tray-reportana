@@ -36,8 +36,10 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     })
 
     //const formatedData = await formatData({ purchase, url: userClient.url });
+    
+    console.log(purchase)
 
-    return res.status(201).send(purchase); 
+    return res.status(201).send(); 
 })
 
 app.listen(port, '0.0.0.0', () => {
