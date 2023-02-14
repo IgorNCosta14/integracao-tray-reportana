@@ -64,8 +64,8 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
 
   const itemArray: ILineItems[] = [];
 
-  purchaseDataToSend.reference_id = purchase.Order.session_id,
-  purchaseDataToSend.number = purchase.Order.session_id,
+  purchaseDataToSend.reference_id = purchase.Order.id,
+  purchaseDataToSend.number = purchase.Order.id,
   purchaseDataToSend.admin_url = `https://391250.commercesuite.com.br/adm/pedidos/detalhe_pedido.php?id_pedido=${purchase.Order.session_id}`,
   purchaseDataToSend.customer_name = purchase.Order.Customer.name,
   purchaseDataToSend.customer_email = purchase.Order.Customer.email,
