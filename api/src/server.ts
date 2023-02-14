@@ -26,7 +26,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
           'Content-Type': 'application/json'
         }
     }).then(async (response) => {
-        return await axios.get(`${userClient.url}/orders/${req.body.scope_id}?access_token=${response.data.access_token}`).then((response) => {
+        return await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${response.data.access_token}`).then((response) => {
             return response.data;
         }).catch((error) => {
             console.log(error);
@@ -35,9 +35,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log(error);
     })
 
-    //const formatedData = await formatData({ purchase, url: userClient.url });
-    
-    console.log(purchase)
+    const formatedData = await formatData({ purchase, url: userClient.url });
+
+    console.log(formatedData)
 
     return res.status(201).send(); 
 })
