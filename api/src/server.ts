@@ -2,6 +2,7 @@ import axios from 'axios';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
+import { IRawObject } from './interfaces/interfaces';
 import { formatData, getCredential } from './utils/Utils';
 
 let port = 8080;
@@ -39,9 +40,16 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
   console.log("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 
+
+  try {
     const formatedData = await formatData({ purchase, url: userClient.url });
 
     return res.status(201).send(formatedData);
+  } catch (error) {
+    console.log(error);
+  }
+
+    
 })
 
 app.listen(port, '0.0.0.0', () => {
