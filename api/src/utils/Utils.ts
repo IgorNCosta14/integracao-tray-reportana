@@ -47,14 +47,6 @@ export async function convertPurchasePaymentStatus(Payment: any[]) {
 }
 
 export async function convertPurchasePaymentType(codigo: string) {
-  console.log(codigo)
-
-  console.log(codigo === "10516" || "80")
-  console.log(parseInt(codigo) === 10516)
-
-  //|| 10526 || 10536 || 10617 || 10623 || 10633 || 10710 || 10725 || 10741 || 10743
-
-
   if ( codigo === "10516" || "10526" || "10536" || "10617" || "10623" || "10633" || "10710" || "10725" || "10741" || "10743" ) {
     return 'PIX';
   } else {
