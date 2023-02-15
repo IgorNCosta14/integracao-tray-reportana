@@ -57,10 +57,11 @@ export async function convertPurchasePaymentType(codigo: string) {
 export async function formatData( {purchase, url}: IFormatData): Promise<Purchase> {
   const purchaseDataToSend = new Purchase();
   const itemArray: ILineItems[] = [];
+  url = url.split("web_api")[0];
 
   purchaseDataToSend.reference_id = purchase.Order.id,
   purchaseDataToSend.number = purchase.Order.id,
-  purchaseDataToSend.admin_url = `https://391250.commercesuite.com.br/adm/pedidos/detalhe_pedido.php?id_pedido=${purchase.Order.session_id}`,
+  purchaseDataToSend.admin_url = `${url}/adm/pedidos/detalhe_pedido.php?id_pedido=${purchase.Order.session_id}`,
   purchaseDataToSend.customer_name = purchase.Order.Customer.name,
   purchaseDataToSend.customer_email = purchase.Order.Customer.email,
   purchaseDataToSend.customer_phone = `+55${purchase.Order.Customer.cellphone}`,
@@ -120,8 +121,8 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
   purchaseDataToSend.payment_status = await convertPurchasePaymentStatus(purchase.Order.Payment),
   purchaseDataToSend.payment_method = await convertPurchasePaymentType(purchase.Order.payment_method_id),
   purchaseDataToSend.tracking_numbers = "",
-  purchaseDataToSend.referring_site = url.split("web_api")[0],
-  purchaseDataToSend.status_url = `${url.split("web_api")[0]}my-account/orders`,
+  purchaseDataToSend.referring_site = url,
+  purchaseDataToSend.status_url = `${url}my-account/orders`,
   purchaseDataToSend.billet_url = purchase.Order.urls.payment,
   purchaseDataToSend.billet_line = '',
   purchaseDataToSend.billet_expired_at = '',
@@ -129,7 +130,6 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
 
   return purchaseDataToSend;
 }
-
 
 export async function getCredential(id: any): Promise<IGetCredential > {  
   let client: IClient = {
