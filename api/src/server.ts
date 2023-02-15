@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/products/purchase', async (req: Request, res: Response): Promise<Response> => {
 
-    // console.log(req.body);
+    console.log(req.body);
 
     const userClient = await getCredential(req.body.seller_id);
 
