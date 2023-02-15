@@ -1,5 +1,6 @@
 import axios from 'axios';
 import bodyParser from 'body-parser';
+import console from 'console';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
@@ -34,7 +35,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     }).catch((error) => {
         console.log(error);
     })
-
+    
     const formatedData = await formatData({ purchase, url: userClient.url });
 
     console.log(formatedData)
