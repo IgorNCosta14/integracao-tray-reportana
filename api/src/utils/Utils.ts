@@ -47,12 +47,15 @@ export async function convertPurchasePaymentStatus(Payment: any[]) {
 }
 
 export async function convertPurchasePaymentType(codigo: string) {
-  console.log(typeof codigo, typeof parseInt(codigo), typeof "10516", typeof 10516)
-  if ( codigo === "10516" || "10526" || "10536" || "10617" || "10623" || "10633" || "10710" || "10725" || "10741" || "10743" ) {
-    console.log('pix')
+  const pixIdCodes = ["10516", "10526", "10536", "10617", "10623", "10633", "10710", "10725", "10741", "10743"]
+
+  const findCode = pixIdCodes.find((code) => code === codigo);
+
+  console.log(findCode)
+
+  if ( findCode === codigo ) {
     return 'PIX';
   } else {
-    console.log('other')
     return 'OTHER';
   }
 }
