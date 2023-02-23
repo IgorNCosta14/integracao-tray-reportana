@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
 
 let port = 8080;
-// const base64 = btoa(`${process.env.REPORTANA_CLIENT_ID}:${process.env.REPORTANA_CLIENT_SERVER}`);
+const base64 = btoa(`${process.env.REPORTANA_CLIENT_ID}:${process.env.REPORTANA_CLIENT_SERVER}`);
 
 if(process.env.PORT != undefined) {
     port = parseInt(process.env.PORT);
@@ -40,22 +40,22 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log(formatedData)
 
-    // await axios.post('https://api.reportana.com/2022-05/orders', formatedData,{
-    //     headers: {
-    //          Authorization: `Basic ${base64}`,
-    //          'Content-Type': 'application/json',
-    //          'Accept-Encoding': 'gzip,deflate,compress'
-    //     }
-    // })
-    // .then(function (response) {
-    //     console.log(`Compra atualizada: ${formatedData.number}`);
-    // })
-    // .catch(function (error) {
-    //     if (error.response) {
-    //         console.log(error.response.data);
-    //         console.log(error.response.status);
-    //     }
-    // });
+    await axios.post('https://api.reportana.com/2022-05/orders', formatedData,{
+        headers: {
+             Authorization: `Basic ${base64}`,
+             'Content-Type': 'application/json',
+             'Accept-Encoding': 'gzip,deflate,compress'
+        }
+    })
+    .then(function (response) {
+        console.log(`Compra atualizada: ${formatedData.number}`);
+    })
+    .catch(function (error) {
+        if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+        }
+    });
 
     return res.status(201).send(); 
 })
