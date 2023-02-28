@@ -30,7 +30,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         return await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${response.data.access_token}`).then((response) => {
             return response.data;
         }).catch((error) => {
-            console.log(error);
+            console.log(error); 
         })
     }).catch((error) => {
         console.log(error);
