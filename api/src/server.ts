@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/products/purchase', async (req: Request, res: Response): Promise<Response> => {
 
-    console.log(req.body);
+    console.log('Notificação da Tray', req.body);
 
     const userClient = await getCredential(req.body.seller_id);
 
@@ -27,7 +27,11 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
           'Content-Type': 'application/json'
         }
     }).then(async (response) => {
+
         return await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${response.data.access_token}`).then((response) => {
+
+            console.log('Compra feita na Tray', response);
+
             return response.data;
         }).catch((error) => {
             console.log(error); 
@@ -36,28 +40,33 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log(error);
     })
     
-    const formatedData = await formatData({ purchase, url: userClient.url });
 
-    console.log(formatedData)
+    if(purchase.Order !== undefined) {
+        const formatedData = await formatData({ purchase, url: userClient.url });
 
-    await axios.post('https://api.reportana.com/2022-05/orders', formatedData,{
-        headers: {
-             Authorization: `Basic ${base64}`,
-             'Content-Type': 'application/json',
-             'Accept-Encoding': 'gzip,deflate,compress'
-        }
-    })
-    .then(function (response) {
-        console.log(`Compra atualizada: ${formatedData.number}`);
-    })
-    .catch(function (error) {
-        if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-        }
-    });
+        console.log('Objeto para envia para Reportana', formatedData)
 
-    return res.status(201).send(); 
+        await axios.post('https://api.reportana.com/2022-05/orders', formatedData,{
+            headers: {
+                Authorization: `Basic ${base64}`,
+                'Content-Type': 'application/json',
+                'Accept-Encoding': 'gzip,deflate,compress'
+            }
+        })
+        .then(function (response) {
+            console.log(`Compra atualizada: ${formatedData.number}`);
+        })
+        .catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+            }
+        });
+
+        return res.status(201).send('send');
+    } else {
+        console.log("Order data missing")
+    }
 })
 
 app.listen(port, '0.0.0.0', () => {
