@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
 
-    console.log(req.query)
-
     const userClient = await getCredential(id);
 
    const token = await axios.post(`${userClient.url}/auth`, userClient.client, {
@@ -32,8 +30,6 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     }).catch((error) => {
         console.log(error);
     })
-
-    console.log(token)
 
     return res.status(201).send(token);
 })
@@ -55,9 +51,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log(error); 
     })
     
-    
-
-    /*if(purchase.Order !== undefined) {
+    if(purchase.Order !== undefined) {
         const formatedData = await formatData({ purchase, url: token.url });
 
         console.log('Objeto para envia para Reportana', formatedData)
@@ -82,7 +76,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         return res.status(201).send('send');
     } else {
         console.log("Order data missing")
-    }*/
+    }
 
     return res.status(201).send(purchase)
 })
