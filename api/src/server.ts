@@ -45,10 +45,15 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log('Compra feita na Tray', response);
 
         return response.data;
-    }).catch((error) => {
-        console.log(error); 
-    })
+    }).catch(error => {
+        if( error.response ){
+            return res.status(400).send(error.response.data.error); 
+        } else {
+            return res.status(400).send(error);
+        }
+    });
     
+    /*
     if(purchase.Order !== undefined) {
         const formatedData = await formatData({ purchase, url: token.data.api_host });
 
@@ -63,11 +68,11 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         })
         .then(function (response) {
             console.log(`Compra atualizada: ${formatedData.number}`);
-        })
-        .catch(function (error) {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
+        }).catch(error => {
+            if( error.response ){
+                return res.status(400).send(error.response.data.error); 
+            } else {
+                return res.status(400).send(error);
             }
         });
 
@@ -76,7 +81,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         console.log("Order data missing")
     }
 
-    return res.status(201).send(purchase)
+    return res.status(201).send(purchase)*/
+
+    return res.status(201).send("Pedido enviado")
 })
 
 app.listen(port, '0.0.0.0', () => {
