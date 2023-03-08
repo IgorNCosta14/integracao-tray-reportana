@@ -46,7 +46,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log(token)
 
-    const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
+    const purchase = await axios.get(`${token.data.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.data.access_token}`).then((response) => {
 
         console.log('Compra feita na Tray', response);
 
