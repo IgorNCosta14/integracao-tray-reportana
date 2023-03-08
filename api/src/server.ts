@@ -50,7 +50,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     })
     
     if(purchase.Order !== undefined) {
-        const formatedData = await formatData({ purchase, url: token.data.url });
+        const formatedData = await formatData({ purchase, url: token.data.api_host });
 
         console.log('Objeto para envia para Reportana', formatedData)
 
