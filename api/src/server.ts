@@ -16,12 +16,14 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/auth', async (req: Request, res: Response): Promise<Response>  => {
-    const { url, client } = req.body;
+app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
+    const { id } = req.body;
 
     console.log(req.body)
 
-   const token = await axios.post(`${url}/auth`, client, {
+    const userClient = await getCredential(id);
+
+   const token = await axios.post(`${userClient.url}/auth`, userClient.client, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -40,14 +42,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
-    const userClient = await getCredential(req.body.seller_id);
+    const token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`)
 
-    const token = await axios.post('https://integracao-tray-reportana-production.up.railway.app/auth', {
-        url: userClient.url,
-        client: userClient.client
-    })
-
-    const purchase = await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
+    const purchase = await axios.get(`${token.url}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
 
         console.log('Compra feita na Tray', response);
 
@@ -59,7 +56,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     
 
     if(purchase.Order !== undefined) {
-        const formatedData = await formatData({ purchase, url: userClient.url });
+        const formatedData = await formatData({ purchase, url: token.url });
 
         console.log('Objeto para envia para Reportana', formatedData)
 
