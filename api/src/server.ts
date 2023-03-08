@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { url, client } = req.body;
 
+    console.log(req.body)
+
    const token = await axios.post(`${url}/auth`, client, {
         headers: {
           'Content-Type': 'application/json'
@@ -28,6 +30,8 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     }).catch((error) => {
         console.log(error);
     })
+
+    console.log(token)
 
     return res.status(201).send(token);
 })
