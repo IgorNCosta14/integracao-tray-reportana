@@ -44,6 +44,8 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     const token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`)
 
+    console.log(token)
+
     const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
 
         console.log('Compra feita na Tray', response);
@@ -55,7 +57,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     
     
 
-    if(purchase.Order !== undefined) {
+    /*if(purchase.Order !== undefined) {
         const formatedData = await formatData({ purchase, url: token.url });
 
         console.log('Objeto para envia para Reportana', formatedData)
@@ -80,7 +82,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         return res.status(201).send('send');
     } else {
         console.log("Order data missing")
-    }
+    }*/
+
+    return res.status(201).send(purchase)
 })
 
 app.listen(port, '0.0.0.0', () => {
