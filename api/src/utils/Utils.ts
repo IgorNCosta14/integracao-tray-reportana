@@ -138,6 +138,8 @@ export async function formatData( {purchase, url}: IFormatData): Promise<Purchas
 }
 
 export async function getCredential(id: any): Promise<IGetCredential > {  
+  console.log(id)
+
   let client: IClient = {
     consumer_key: `${process.env.CONSUMERKEY}`,
     consumer_secret: `${process.env.CONSUMERSECRET}`,
