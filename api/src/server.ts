@@ -16,7 +16,7 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
+app.post('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { url, client } = req.body;
 
     console.log(req.body)
@@ -42,7 +42,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     const userClient = await getCredential(req.body.seller_id);
 
-    const token = await axios.get('https://integracao-tray-reportana-production.up.railway.app/auth', {
+    const token = await axios.post('https://integracao-tray-reportana-production.up.railway.app/auth', {
         url: userClient.url,
         client: userClient.client
     })
