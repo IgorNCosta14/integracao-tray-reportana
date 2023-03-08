@@ -40,6 +40,8 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     const token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`)
 
+    console.log(token)
+
     const purchase = await axios.get(`${token.data.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.data.access_token}`).then((response) => {
 
         console.log('Compra feita na Tray', response.data);
