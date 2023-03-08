@@ -17,7 +17,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
-    const { id } = req.body;
+    const { id } = req.query;
 
     console.log(req.body)
 
