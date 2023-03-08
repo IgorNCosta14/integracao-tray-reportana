@@ -16,29 +16,42 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
+    const { url, client } = req.body;
+
+   const token = await axios.post(`${url}/auth`, client, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    }).then(async (response) => {
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+    })
+
+    return res.status(201).send(token);
+})
+
 app.post('/products/purchase', async (req: Request, res: Response): Promise<Response> => {
 
     console.log('Notificação da Tray', req.body);
 
     const userClient = await getCredential(req.body.seller_id);
 
-    const purchase = await axios.post(`${userClient.url}/auth`, userClient.client, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-    }).then(async (response) => {
-
-        return await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${response.data.access_token}`).then((response) => {
-
-            console.log('Compra feita na Tray', response);
-
-            return response.data;
-        }).catch((error) => {
-            console.log(error); 
-        })
-    }).catch((error) => {
-        console.log(error);
+    const token = await axios.get('https://integracao-tray-reportana-production.up.railway.app/auth', {
+        url: userClient.url,
+        client: userClient.client
     })
+
+    const purchase = await axios.get(`${userClient.url}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
+
+        console.log('Compra feita na Tray', response);
+
+        return response.data;
+    }).catch((error) => {
+        console.log(error); 
+    })
+    
     
 
     if(purchase.Order !== undefined) {
