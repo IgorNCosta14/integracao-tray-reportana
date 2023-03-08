@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
 
-    console.log(req.body)
+    console.log(req.query)
 
     const userClient = await getCredential(id);
 
