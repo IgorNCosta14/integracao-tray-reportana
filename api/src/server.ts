@@ -30,7 +30,9 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
 
     const userClient = await getCredential(id);
 
-    console.log(userClient)
+    if(userClient.client.code === '') {
+        return res.status(400).send("Code is missing"); 
+    }
 
     let token: TokenResponse;
     const dateNow = dayjs()
