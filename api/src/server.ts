@@ -24,6 +24,10 @@ let timerRefreshToken: any = dayjs();
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
 
+    if(!id) {
+        return res.status(400).send("Id is missing"); 
+    }
+
     const userClient = await getCredential(id);
 
     let token: TokenResponse;
