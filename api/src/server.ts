@@ -42,18 +42,22 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log(token)
 
-    const purchase = await axios.get(`${token.data.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.data.access_token}`).then((response) => {
+    try {
+        const purchase = await axios.get(`${token.data.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.data.access_token}`).then((response) => {
 
-        console.log('Compra feita na Tray', response.data);
+            console.log('Compra feita na Tray', response.data);
 
-        return response.data;
-    }).catch(error => {
+            return response.data;
+        });
+
+        return res.status(201).send("Pedido enviado")
+    }catch(error) {
         if( error.response ){
             return res.status(400).send(error.response.data.error); 
         } else {
-            return res.status(400).send(error);
+            return res.status(500).send("Internal Server Error");
         }
-    });
+    };
     
     /*
     if(purchase.Order !== undefined) {
@@ -84,8 +88,6 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
     }
 
     return res.status(201).send(purchase)*/
-
-    return res.status(201).send("Pedido enviado")
 })
 
 app.listen(port, '0.0.0.0', () => {
