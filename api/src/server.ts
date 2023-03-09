@@ -84,11 +84,9 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
             }
         };
     } catch (error) {
-        if( error.response ){
-            return res.status(400).send(error.response.data.error); 
-        } else {
-            return res.status(400).send(error);
-        }
+        
+        return res.status(400).send(error);
+
     }
     
     /*
