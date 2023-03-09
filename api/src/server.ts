@@ -61,33 +61,35 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
-    const token: TokenResponse = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
-        return response.data;
-    }).catch(error => {
+    try {
+        const token: TokenResponse = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
+            return response.data;
+        })
+    
+        try {
+            const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
+
+                console.log('Compra feita na Tray', response.data);
+
+                return response.data;
+            });
+
+            return res.status(201).send("Pedido enviado")
+        }catch(error) {
+            if( error.response ){
+                return res.status(400).send(error.response.data.error); 
+            } else {
+                console.log(error)
+                return res.status(500).send("Internal Server Error");
+            }
+        };
+    } catch (error) {
         if( error.response ){
             return res.status(400).send(error.response.data.error); 
         } else {
             return res.status(400).send(error);
         }
-    });
-
-    try {
-        const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
-
-            console.log('Compra feita na Tray', response.data);
-
-            return response.data;
-        });
-
-        return res.status(201).send("Pedido enviado")
-    }catch(error) {
-        if( error.response ){
-            return res.status(400).send(error.response.data.error); 
-        } else {
-            console.log(error)
-            return res.status(500).send("Internal Server Error");
-        }
-    };
+    }
     
     /*
     if(purchase.Order !== undefined) {
