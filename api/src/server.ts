@@ -1,5 +1,5 @@
 import axios from 'axios';
-import console from 'console';
+import console, { time } from 'console';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
@@ -35,7 +35,7 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     }
 
     let token: TokenResponse;
-    const dateNow = dayjs()
+    const dateNow = dayjs();
 
     token = await axios.post(`${userClient.url}/auth`, userClient.client, {
         headers: {
@@ -65,7 +65,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
-        let token: TokenResponse
+        let token: TokenResponse;
 
         try {
             token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
@@ -75,7 +75,6 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
             return res.status(400).send("Error, seller id invalid or not found");
         }
         
-    
         try {
             const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
 
@@ -84,12 +83,11 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
                 return response.data;
             });
 
-            return res.status(201).send("Pedido enviado")
+            return res.status(201).send("Pedido enviado");
         }catch(error) {
             return res.status(400).send("Error, order not found");
         };
 
-    
     /*
     if(purchase.Order !== undefined) {
         const formatedData = await formatData({ purchase, url: token.data.api_host });
