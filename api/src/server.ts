@@ -1,9 +1,11 @@
 import axios from 'axios';
-import bodyParser from 'body-parser';
 import console from 'console';
 import 'dotenv/config';
 import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
+import dayjs from 'dayjs'
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 let port = 8080;
 const base64 = btoa(`${process.env.REPORTANA_CLIENT_ID}:${process.env.REPORTANA_CLIENT_SERVER}`);
@@ -36,7 +38,7 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
         console.log(error);
     })
 
-    console.log(timerAccessToken, timerRefreshToken)
+    console.log(timerAccessToken, timerRefreshToken, dayjs())
 
     return res.status(201).send(token);
 })
