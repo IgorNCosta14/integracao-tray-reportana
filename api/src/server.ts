@@ -38,7 +38,7 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
         console.log(error);
     })
 
-    console.log(dayjs(timerAccessToken).utc().local().format(), dayjs(timerRefreshToken).utc().local().format(), dayjs())
+    console.log(dayjs(timerAccessToken).utc().local().format(), dayjs(timerRefreshToken).utc().local().format(),dayjs().utc().local().format())
 
     return res.status(201).send(token);
 })
