@@ -17,8 +17,8 @@ if(process.env.PORT != undefined) {
 const app = express()
 app.use(express.json());
 
-let timerAccessToken = ""
-let timerRefreshToken = ""
+let timerAccessToken: any
+let timerRefreshToken: any
 
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
@@ -30,15 +30,16 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
           'Content-Type': 'application/json'
         }
     }).then(async (response) => {
-        timerAccessToken = response.data.date_expiration_access_token;
-        timerRefreshToken = response.data.date_expiration_refresh_token;
+        timerAccessToken = dayjs(response.data.date_expiration_access_token);
+        timerRefreshToken = dayjs(response.data.date_expiration_refresh_token);
 
         return response.data;
     }).catch((error) => {
         console.log(error);
     })
-
-    console.log(dayjs(timerAccessToken).utc().local().format(), dayjs(timerRefreshToken).utc().local().format(),dayjs().utc().local().format())
+    const dateNow = dayjs()
+    
+    console.log(dateNow.diff(timerAccessToken), dateNow.diff(timerRefreshToken))
 
     return res.status(201).send(token);
 })
