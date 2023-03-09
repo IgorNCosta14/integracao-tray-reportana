@@ -55,6 +55,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
         if( error.response ){
             return res.status(400).send(error.response.data.error); 
         } else {
+            console.log(error)
             return res.status(500).send("Internal Server Error");
         }
     };
