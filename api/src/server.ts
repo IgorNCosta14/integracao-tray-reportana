@@ -13,8 +13,9 @@ if(process.env.PORT != undefined) {
 }
 
 const app = express()
+app.use(express.json());
 
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
