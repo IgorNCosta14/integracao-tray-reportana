@@ -4,6 +4,18 @@ export interface IClient {
     code: string
 }
 
+export interface TokenResponse {
+    message: string,
+    code: number,
+    access_token: string,
+    refresh_token: string,
+    date_expiration_access_token: string,
+    date_expiration_refresh_token: string,
+    date_activate: string,
+    api_host: string,
+    store_id: string
+}
+
 export interface IGetCredential {
     client: IClient,
     url: string

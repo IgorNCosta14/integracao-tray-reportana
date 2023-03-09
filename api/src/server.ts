@@ -5,6 +5,7 @@ import express, { Request, Response } from "express";
 import { formatData, getCredential } from './utils/Utils';
 import dayjs from 'dayjs'
 import utc from "dayjs/plugin/utc";
+import { TokenResponse } from './interfaces/interfaces';
 dayjs.extend(utc);
 
 let port = 8080;
@@ -17,17 +18,20 @@ if(process.env.PORT != undefined) {
 const app = express()
 app.use(express.json());
 
-let timerAccessToken: any
-let timerRefreshToken: any
+let timerAccessToken: any = dayjs();
+let timerRefreshToken: any = dayjs();
 
 app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     const { id } = req.query;
 
     const userClient = await getCredential(id);
 
-   const token = await axios.post(`${userClient.url}/auth`, userClient.client, {
+    let token: TokenResponse;
+    const dateNow = dayjs()
+
+    token = await axios.post(`${userClient.url}/auth`, userClient.client, {
         headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
         }
     }).then(async (response) => {
         timerAccessToken = dayjs(response.data.date_expiration_access_token);
@@ -37,9 +41,6 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
     }).catch((error) => {
         console.log(error);
     })
-    const dateNow = dayjs()
-    
-    console.log(dateNow.diff(timerAccessToken), dateNow.diff(timerRefreshToken))
 
     return res.status(201).send(token);
 })
