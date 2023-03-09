@@ -46,9 +46,13 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
         timerRefreshToken = dayjs(response.data.date_expiration_refresh_token);
 
         return response.data;
-    }).catch((error) => {
-        console.log(error);
-    })
+    }).catch(error => {
+        if( error.response ){
+            return res.status(400).send(error.response.data.error); 
+        } else {
+            return res.status(400).send(error);
+        }
+    });
 
     return res.status(201).send(token);
 })
@@ -61,12 +65,17 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
-    
-        const token: TokenResponse = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
+        let token: TokenResponse
+
+        token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
             return response.data;
-        }).catch((error) => {
-            return res.status(400).send('token');
-        })
+        }).catch(error => {
+            if( error.response ){
+                return res.status(400).send(error.response.data.error); 
+            } else {
+                return res.status(400).send(error);
+            }
+        });
     
         try {
             const purchase = await axios.get(`${token.api_host}/orders/${req.body.scope_id}/complete?access_token=${token.access_token}`).then((response) => {
