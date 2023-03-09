@@ -61,9 +61,11 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
-    try {
+    
         const token: TokenResponse = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`).then(function (response) {
             return response.data;
+        }).catch((error) => {
+            return res.status(400).send('token');
         })
     
         try {
@@ -83,11 +85,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
                 return res.status(500).send("Internal Server Error");
             }
         };
-    } catch (error) {
-        
-        return res.status(400).send(error);
 
-    }
     
     /*
     if(purchase.Order !== undefined) {
