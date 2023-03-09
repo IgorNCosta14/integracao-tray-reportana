@@ -151,7 +151,7 @@ export async function getCredential(id: any): Promise<IGetCredential > {
   switch (`${id}`) {
     case "391250" : client.code = `${process.env.CODE391250}`, url = `${process.env.URL391250}`; break;
     case "391251" : client.code = `${process.env.CODE391251}`, url = `${process.env.URL391251}`; break;
-    default:        {  throw new Error;  }
+    default: client.code = '', url = ''; break;
   }
 
   const credential = { 
