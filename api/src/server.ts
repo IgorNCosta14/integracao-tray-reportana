@@ -72,7 +72,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
                 return response.data;
             })
         } catch (error) {
-            return res.status(400).send("token");
+            return res.status(400).send("Error, seller id invalid or not found");
         }
         
     
@@ -86,12 +86,7 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
             return res.status(201).send("Pedido enviado")
         }catch(error) {
-            if( error.response ){
-                return res.status(400).send(error.response.data.error); 
-            } else {
-                console.log(error)
-                return res.status(500).send("Internal Server Error");
-            }
+            return res.status(400).send("Error, order not found");
         };
 
     
