@@ -38,6 +38,8 @@ app.post('/products/purchase', async (req: Request, res: Response): Promise<Resp
 
     console.log('Notificação da Tray', req.body);
 
+    console.log(req.body.seller_id)
+
     const token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`)
 
     console.log(token)
