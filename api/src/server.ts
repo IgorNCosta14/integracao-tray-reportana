@@ -55,6 +55,10 @@ app.get('/auth', async (req: Request, res: Response): Promise<Response>  => {
 
 app.post('/products/purchase', async (req: Request, res: Response): Promise<Response> => {
 
+    if(!req.body.scope_id || !req.body.seller_id) {
+        return res.status(400).send("Error, scope_id or seller_id are missing");
+    }
+
     console.log('Notificação da Tray', req.body);
 
     const token = await axios.get(`https://integracao-tray-reportana-production.up.railway.app/auth?id=${req.body.seller_id}`)
